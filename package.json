@@ -1,0 +1,24 @@
+{
+  "author": "Patrick Stein <lylepstein@gmail.com> (http://patrickstein.com)",
+  "name": "akom",
+  "description": "Automatic dependency resolution for Javascript",
+  "version": "0.0.1",
+  "homepage": "https://github.com/shz/a-kind-of-magic",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:shz/a-kind-of-magic.git"
+  },
+  "main": "./lib/akom",
+  "bin": {
+    "akom": "./bin/akom"
+  },
+  "engines": {
+    "node": "~0.4.7"
+  },
+  "dependencies": {
+    "acorn": "~0.2.0",
+    "estraverse": "~1.1.1",
+    "escope": "0.0.14"
+  },
+  "devDependencies": {}
+}
