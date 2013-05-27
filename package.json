@@ -17,8 +17,7 @@
   },
   "dependencies": {
     "acorn": "~0.2.0",
-    "estraverse": "~1.1.1",
-    "escope": "0.0.14"
+    "estraverse": "~1.1.1"
   },
   "devDependencies": {}
 }
