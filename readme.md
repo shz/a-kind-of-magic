@@ -35,7 +35,23 @@ npm install a-kind-of-magic
 
 # Usage
 
-[This section will be written when it's done]
+You've got two ways to use `akom`: via command line, or as a library.  The library
+approach is way more powerful.
+
+## Command Line
+
+This isn't even implemented yet...
+
+## Library
+
+A quick sample:
+
+```javascript
+var akom = require('a-kind-of-magic');
+akom.scan('some/path', function(err, files) {
+
+});
+```
 
 # Avoiding Problems
 
@@ -65,7 +81,7 @@ expressions at the root of a file.  Like so:
 ```javascript
 'akom require: foo bar baz.bam';
 'akom provide: shoo foo.zap';
-'aokm no-provide: zing';
+'akom no-provide: zing';
 'akom no-require: zam';
 ```
 
