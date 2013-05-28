@@ -9,6 +9,9 @@
     "url": "git@github.com:shz/a-kind-of-magic.git"
   },
   "main": "./lib/akom",
+  "scripts": {
+    "test": "node_modules/.bin/nodeunit test/*"
+  },
   "bin": {
     "akom": "./bin/akom"
   },
@@ -19,5 +22,7 @@
     "acorn": "~0.2.0",
     "estraverse": "~1.1.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodeunit": "*"
+  }
 }
