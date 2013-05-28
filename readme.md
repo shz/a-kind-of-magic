@@ -2,6 +2,12 @@
 
 Automatic dependency resolution for Javascript.  Also `akom` for short.
 
+**IMPORTANT NOTE:** I practice Readme Driven Development -- this project is not yet completed!
+
+Currently, the resolver isn't hooked up to the public API, and the only provide/require
+gathering implemented is the hardcoded stuff described at the bottom of this readme.  Docs
+are also a little lacking, I'm sure you'll agree.
+
 # What it do
 
 This scans all the Javascript files in a directory, and outputs information about
