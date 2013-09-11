@@ -2,11 +2,11 @@
 
 Call `estraverse.traverse` with an object that has the following methods:
 
-`enter` - Called when entering a node
-`leave` - Called when leaving a node
+ * `enter` - Called when entering a node
+ * `leave` - Called when leaving a node
 
 Both of these methods have the following signature: `function(node, parent)`.
-Note that `parent` can be null, but `node` will never be.
+Note that `parent` can be null in some situations.
 
 The `enter` function may control the traversal by returning the
 following values:
@@ -20,14 +20,19 @@ the following values:
 
  * `estraverse.VisitorOption.Break` - Ends it all
 
-# Esample
+# Example
+
+The following code will output all variables declared
+at the root of a file.
 
 ```javascript
 estraverse.traverse(ast, {
   enter: function(node, parent) {
-
+    if (node.type == 'FunctionExpression')
+      return estraverse.VisitorOption.Skip;
   },
   leave: function(node, parent) {
-
+    if (node.type == 'VariableDeclarator')
+      console.log(node.id.name);
   }
 });

@@ -14,7 +14,7 @@ exports.testUnmet = function(test) {
   ];
 
   test.throws(function() {
-    resolve.go(file, specs);
+    resolve(file, specs);
   });
   test.done();
 };
@@ -33,7 +33,7 @@ exports.testDependencyHasUnmet = function(test) {
   ];
 
   test.throws(function() {
-    resolve.go(file, specs);
+    resolve(file, specs);
   });
   test.done();
 };
@@ -66,7 +66,7 @@ exports.testResolution = function(test) {
     }
   ];
 
-  var output = resolve.go(file, specs);
+  var output = resolve(file, specs);
 
   test.equal(output[0].path, 'first', 'First file is correct');
   test.equal(output[1].path, 'second', 'Second file is correct');
@@ -75,7 +75,7 @@ exports.testResolution = function(test) {
   test.done();
 };
 
-exports.testCirculatDetection = function(test) {
+exports.testCircularDetection = function(test) {
 
   var file = {
     provide: [],
@@ -95,7 +95,7 @@ exports.testCirculatDetection = function(test) {
   ];
 
   test.throws(function() {
-    resolve.go(file, specs);
+    resolve(file, specs);
   });
 
   test.done();
