@@ -76,3 +76,26 @@ exports.testBasicRequiresInIIFE = function(test) {
 
   test.done();
 };
+
+exports.testNestedRequires = function(test) {
+  test.deepEqual(analyze(function() {
+    a.b + 1;
+  }), {
+    provides: [],
+    requires: ['a', 'a.b']
+  });
+
+  test.done();
+};
+
+exports.testNestedProvides = function(test) {
+  test.deepEqual(analyze(function() {
+    a.b = 1;
+  }), {
+    provides: ['a.b'],
+    requires: ['a']
+  });
+
+  test.done();
+};
+
