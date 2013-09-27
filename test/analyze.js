@@ -3,10 +3,11 @@ var acorn = require('acorn')
   ;
 
 var bodyRe = /^function\s*\(\)\s*{\s*([\s\S]*?)\s*}$/;
-var analyze = function(f) {
-  return _analyze(acorn.parse(f.toString().match(bodyRe)[1], {
-    locations: true
-  }));
+var analyze = function(f, show) {
+  var parsed = acorn.parse(f.toString().match(bodyRe)[1], { locations: true });
+  if (show)
+    console.log(JSON.stringify(parsed, null, 2));
+  return _analyze(parsed);
 };
 
 exports.testDirectiveRequire = function(test) {
@@ -121,13 +122,62 @@ exports.testDeeplyNestedRequires = function(test) {
   test.done();
 };
 
-// Discovered in the wild by the crazy "all the module systems"
-// declaration style.
+// Discovered in the wild by the crazy UMD declaration style
 exports.testIIFEWithVariable = function(test) {
   test.deepEqual(analyze(function() {
     (function() {
       var a;
     })();
+  }), {
+    provides: [],
+    requires: []
+  });
+
+  test.done();
+};
+
+exports.testTypeof = function(test) {
+  test.deepEqual(analyze(function() {
+    typeof a == 'string';
+  }), {
+    provides: [],
+    requires: []
+  });
+
+  test.done();
+};
+
+exports.testFunctionExpressionArgument = function(test) {
+  test.deepEqual(analyze(function() {
+    var a = function(b) {
+      return b;
+    };
+  }), {
+    provides: ['a'],
+    requires: []
+  });
+
+  test.done();
+};
+
+exports.testFunctionDeclarationArgument = function(test) {
+  test.deepEqual(analyze(function() {
+    (function() {
+      function foo(b) { return b; };
+    })();
+  }), {
+    provides: [],
+    requires: []
+  });
+
+  test.done();
+};
+
+exports.testFunctionArgumentToIIFE = function(test) {
+  test.deepEqual(analyze(function() {
+    (function(f) {})(function(a) {
+      var b;
+    });
   }), {
     provides: [],
     requires: []
