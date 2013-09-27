@@ -99,3 +99,17 @@ exports.testNestedProvides = function(test) {
   test.done();
 };
 
+// Discovered in the wild by the crazy "all the module systems"
+// declaration style.
+exports.testIIFEWithVariable = function(test) {
+  test.deepEqual(analyze(function() {
+    (function() {
+      var a;
+    })();
+  }), {
+    provides: [],
+    requires: []
+  });
+
+  test.done();
+};
