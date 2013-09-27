@@ -1,5 +1,24 @@
 var resolve = require('../lib/resolve');
 
+exports.testSupportsObject = function(test) {
+  var file = {
+    path: 'asdf',
+    provide: ['a'],
+    require: []
+  };
+  var specs = {
+    'asdf': {
+      path: 'asdf',
+      provide: ['a'],
+      require: []
+    }
+  };
+
+  var output = resolve(file, specs);
+  test.equal(output.length, 0, 'Resolve worked');
+  test.done();
+};
+
 exports.testUnmet = function(test) {
   var file = {
     provide: [],
