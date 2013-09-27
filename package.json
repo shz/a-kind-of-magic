@@ -2,7 +2,7 @@
   "author": "Patrick Stein <lylepstein@gmail.com> (http://patrickstein.com)",
   "name": "a-kind-of-magic",
   "description": "Automatic dependency resolution for Javascript",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "homepage": "https://github.com/shz/a-kind-of-magic",
   "repository": {
     "type": "git",

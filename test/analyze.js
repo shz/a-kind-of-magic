@@ -99,6 +99,28 @@ exports.testNestedProvides = function(test) {
   test.done();
 };
 
+exports.testDeeplyNestedProvides = function(test) {
+    test.deepEqual(analyze(function() {
+    a.b.c.d.e.f = 1;
+  }), {
+    provides: ['a.b.c.d.e.f'],
+    requires: ['a', 'a.b', 'a.b.c', 'a.b.c.d', 'a.b.c.d.e']
+  });
+
+  test.done();
+};
+
+exports.testDeeplyNestedRequires = function(test) {
+    test.deepEqual(analyze(function() {
+    a.b.c.d.e.f();
+  }), {
+    provides: [],
+    requires: ['a', 'a.b', 'a.b.c', 'a.b.c.d', 'a.b.c.d.e', 'a.b.c.d.e.f']
+  });
+
+  test.done();
+};
+
 // Discovered in the wild by the crazy "all the module systems"
 // declaration style.
 exports.testIIFEWithVariable = function(test) {
