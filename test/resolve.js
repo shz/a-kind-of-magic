@@ -19,6 +19,20 @@ exports.testSupportsObject = function(test) {
   test.done();
 };
 
+exports.testSupportsFileAsPathString = function(test) {
+  var specs = {
+    'asdf': {
+      path: 'asdf',
+      provide: ['a'],
+      require: []
+    }
+  };
+
+  var output = resolve('asdf', specs);
+  test.equal(output.length, 0, 'Resolve worked');
+  test.done();
+};
+
 exports.testUnmet = function(test) {
   var file = {
     provide: [],
