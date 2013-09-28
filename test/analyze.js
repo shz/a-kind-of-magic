@@ -126,7 +126,7 @@ exports.testDeeplyNestedRequires = function(test) {
 exports.testIIFEWithVariable = function(test) {
   test.deepEqual(analyze(function() {
     (function() {
-      var a;
+      var z;
     })();
   }), {
     provides: [],
@@ -178,6 +178,19 @@ exports.testFunctionArgumentToIIFE = function(test) {
     (function(f) {})(function(a) {
       var b;
     });
+  }), {
+    provides: [],
+    requires: []
+  });
+
+  test.done();
+};
+
+exports.testIfConditionTypeof = function(test) {
+  test.deepEqual(analyze(function() {
+    if (typeof foo != 'undefined') {
+      foo += 1;
+    }
   }), {
     provides: [],
     requires: []
