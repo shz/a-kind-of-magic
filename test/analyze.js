@@ -198,3 +198,36 @@ exports.testIfConditionTypeof = function(test) {
 
   test.done();
 };
+
+exports.testInScopeMember = function(test) {
+  test.deepEqual(analyze(function() {
+    (function() {
+      var a = {};
+      a.b = {};
+      a.b.c = {};
+      return a.b.c;
+    })();
+  }), {
+    provides: [],
+    requires: []
+  });
+
+  test.done();
+};
+exports.testInScopeMemberUsage = function(test) {
+  test.deepEqual(analyze(function() {
+    (function() {
+      var a = {};
+      a.b = {};
+      a.b.c = {};
+      a.b.d += 1;
+      return a.b.c;
+    })();
+  }), {
+    provides: [],
+    requires: []
+  });
+
+  test.done();
+};
+
