@@ -2,6 +2,8 @@
 
 Automatic dependency resolution for Javascript.  Also `akom` for short.
 
+[![Build Status](https://travis-ci.org/shz/a-kind-of-magic.png)](https://travis-ci.org/shz/a-kind-of-magic)
+
 **IMPORTANT NOTE:** I practice Readme Driven Development -- this project is not yet completed!
 
 Currently, the resolver isn't hooked up to the public API, and the only provide/require
