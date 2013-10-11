@@ -10,224 +10,145 @@ var analyze = function(f, show) {
   return _analyze(parsed);
 };
 
-exports.testDirectiveRequire = function(test) {
-  test.deepEqual(analyze(function() {
-    'akom require: foo bar';
-  }), {
-    provides: [],
-    requires: ['foo', 'bar']
-  });
+var test = function(name, f) {
+  var spec = {requires: [], provides: []};
 
-  test.done();
+  exports[('test ' + name).replace(/\s+(\.)/g, function(a) { a.toUpperCase() })] = function(test) {
+    test.deepEqual(analyze(f), spec);
+    test.done();
+  };
+
+  var ret =  {
+    requires: function() { spec.requires = Array.prototype.slice.call(arguments); return ret; },
+    provides: function() { spec.provides = Array.prototype.slice.call(arguments); return ret; }
+  };
+  return ret;
 };
 
-exports.testDirectiveProvide = function(test) {
-  test.deepEqual(analyze(function() {
-    'akom provide: foo bar';
-  }), {
-    provides: ['foo', 'bar'],
-    requires: []
+/////////////////////////////////////////////////////
+// Contrived Tests
+/////////////////////////////////////////////////////
+
+test('directive require', function() {
+  'akom require: foo bar';
+})
+.requires('foo', 'bar');
+
+test('directive provide', function() {
+  'akom provide: foo bar';
+})
+.provides('foo', 'bar');
+
+test('directive require with provides self', function() {
+  'akom require: foo';
+  'akom provide: foo bar';
+})
+.provides('foo', 'bar');
+
+test('global variable provides', function() {
+  var a = 1;
+})
+.provides('a');
+
+test('basic requires', function() {
+  b + 1;
+})
+.requires('b');
+
+test('basic requires in IIFE', function() {
+  (function() { return b })();
+})
+.requires('b');
+
+test('nested requires', function() {
+  a.b + 1;
+})
+.requires('a', 'a.b');
+
+test('nested provides', function() {
+  a.b = 1;
+})
+.provides('a.b')
+.requires('a');
+
+test('deeply nested provides', function() {
+  a.b.c.d.e.f = 1;
+})
+.provides('a.b.c.d.e.f')
+.requires('a', 'a.b', 'a.b.c', 'a.b.c.d', 'a.b.c.d.e');
+
+test('deeply nested requires', function() {
+  a.b.c.d.e.f();
+})
+.requires('a', 'a.b', 'a.b.c', 'a.b.c.d', 'a.b.c.d.e', 'a.b.c.d.e.f');
+
+test('typeof', function() {
+  typeof a == 'string';
+});
+
+test('function expression argument', function() {
+  var a = function(b) {
+    return b;
+  };
+})
+.provides('a');
+
+test('function declaration argument', function() {
+  (function() {
+    function foo(b) { return b; };
+  })();
+});
+
+test('function argument to IIFE', function() {
+  (function(f) {})(function(a) {
+    var b;
   });
+});
 
-  test.done();
-};
+test('if condition typeof', function() {
+  if (typeof foo != 'undefined') {
+    foo += 1;
+  }
+});
 
-exports.testDirectiveRequireWithProvidesSelf = function(test) {
-  test.deepEqual(analyze(function() {
-    'akom require: foo';
-    'akom provide: foo bar';
-  }), {
-    provides: ['foo', 'bar'],
-    requires: []
-  });
+test('if condition fail typeof', function() {
+  if (typeof foo == 'undefined')
+    foo += 1;
+})
+.requires('foo');
 
-  test.done();
-};
+test('if condition typeof conditional definition', function() {
+  if (typeof a == 'undefined')
+    a = 'yay';
+}).provides('a');
 
+test('in scope member', function() {
+  (function() {
+    var a = {};
+    a.b = {};
+    a.b.c = {};
+    return a.b.c;
+  })();
+});
 
-exports.testGlobalVariableProvides = function(test) {
-  test.deepEqual(analyze(function() {
-    var a = 1;
-  }), {
-    provides: ['a'],
-    requires: []
-  });
+test('in scope member usage', function() {
+  (function() {
+    var a = {};
+    a.b = {};
+    a.b.c = {};
+    a.b.d += 1;
+    return a.b.c;
+  })();
+});
 
-  test.done();
-};
+///////////////////////////////////////
+// Regression Tests
+///////////////////////////////////////
 
-exports.testBasicRequires = function(test) {
-  test.deepEqual(analyze(function() {
-    b + 1;
-  }), {
-    provides: [],
-    requires: ['b']
-  });
-
-  test.done();
-};
-
-exports.testBasicRequiresInIIFE = function(test) {
-  test.deepEqual(analyze(function() {
-    (function() { return b })();
-  }), {
-    provides: [],
-    requires: ['b']
-  });
-
-  test.done();
-};
-
-exports.testNestedRequires = function(test) {
-  test.deepEqual(analyze(function() {
-    a.b + 1;
-  }), {
-    provides: [],
-    requires: ['a', 'a.b']
-  });
-
-  test.done();
-};
-
-exports.testNestedProvides = function(test) {
-  test.deepEqual(analyze(function() {
-    a.b = 1;
-  }), {
-    provides: ['a.b'],
-    requires: ['a']
-  });
-
-  test.done();
-};
-
-exports.testDeeplyNestedProvides = function(test) {
-    test.deepEqual(analyze(function() {
-    a.b.c.d.e.f = 1;
-  }), {
-    provides: ['a.b.c.d.e.f'],
-    requires: ['a', 'a.b', 'a.b.c', 'a.b.c.d', 'a.b.c.d.e']
-  });
-
-  test.done();
-};
-
-exports.testDeeplyNestedRequires = function(test) {
-    test.deepEqual(analyze(function() {
-    a.b.c.d.e.f();
-  }), {
-    provides: [],
-    requires: ['a', 'a.b', 'a.b.c', 'a.b.c.d', 'a.b.c.d.e', 'a.b.c.d.e.f']
-  });
-
-  test.done();
-};
-
-// Discovered in the wild by the crazy UMD declaration style
-exports.testIIFEWithVariable = function(test) {
-  test.deepEqual(analyze(function() {
-    (function() {
-      var z;
-    })();
-  }), {
-    provides: [],
-    requires: []
-  });
-
-  test.done();
-};
-
-exports.testTypeof = function(test) {
-  test.deepEqual(analyze(function() {
-    typeof a == 'string';
-  }), {
-    provides: [],
-    requires: []
-  });
-
-  test.done();
-};
-
-exports.testFunctionExpressionArgument = function(test) {
-  test.deepEqual(analyze(function() {
-    var a = function(b) {
-      return b;
-    };
-  }), {
-    provides: ['a'],
-    requires: []
-  });
-
-  test.done();
-};
-
-exports.testFunctionDeclarationArgument = function(test) {
-  test.deepEqual(analyze(function() {
-    (function() {
-      function foo(b) { return b; };
-    })();
-  }), {
-    provides: [],
-    requires: []
-  });
-
-  test.done();
-};
-
-exports.testFunctionArgumentToIIFE = function(test) {
-  test.deepEqual(analyze(function() {
-    (function(f) {})(function(a) {
-      var b;
-    });
-  }), {
-    provides: [],
-    requires: []
-  });
-
-  test.done();
-};
-
-exports.testIfConditionTypeof = function(test) {
-  test.deepEqual(analyze(function() {
-    if (typeof foo != 'undefined') {
-      foo += 1;
-    }
-  }), {
-    provides: [],
-    requires: []
-  });
-
-  test.done();
-};
-
-exports.testInScopeMember = function(test) {
-  test.deepEqual(analyze(function() {
-    (function() {
-      var a = {};
-      a.b = {};
-      a.b.c = {};
-      return a.b.c;
-    })();
-  }), {
-    provides: [],
-    requires: []
-  });
-
-  test.done();
-};
-exports.testInScopeMemberUsage = function(test) {
-  test.deepEqual(analyze(function() {
-    (function() {
-      var a = {};
-      a.b = {};
-      a.b.c = {};
-      a.b.d += 1;
-      return a.b.c;
-    })();
-  }), {
-    provides: [],
-    requires: []
-  });
-
-  test.done();
-};
-
+// Derived from an in the wild UMD-style delcaration
+test('IIFE with variable', function() {
+  (function() {
+    var z;
+  })();
+})
+;
