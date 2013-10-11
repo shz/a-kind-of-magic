@@ -13,7 +13,7 @@ var analyze = function(f, show) {
 var test = function(name, f) {
   var spec = {requires: [], provides: []};
 
-  exports[('test ' + name).replace(/\s+(\.)/g, function(a) { a.toUpperCase() })] = function(test) {
+  exports[('test ' + name)] = function(test) {
     test.deepEqual(analyze(f), spec);
     test.done();
   };
