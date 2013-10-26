@@ -105,6 +105,13 @@ test('function argument to IIFE', function() {
   });
 });
 
+test('implicit global in IIFE', function() {
+  (function() {
+    asdf = 1;
+  })();
+})
+.provides('asdf');
+
 test('if condition typeof', function() {
   if (typeof foo != 'undefined') {
     foo += 1;
