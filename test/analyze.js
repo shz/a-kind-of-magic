@@ -82,6 +82,15 @@ test('deeply nested requires', function() {
 })
 .requires('a', 'a.b', 'a.b.c', 'a.b.c.d', 'a.b.c.d.e', 'a.b.c.d.e.f');
 
+test('many provides', function() {
+  a.b = {};
+  a.b.c = {};
+  a.b.c.d = {};
+  a.b.c.d.e = {};
+})
+.requires('a')
+.provides('a.b', 'a.b.c', 'a.b.c.d', 'a.b.c.d.e');
+
 test('typeof', function() {
   typeof a == 'string';
 });
@@ -116,6 +125,18 @@ test('if condition typeof', function() {
   if (typeof foo != 'undefined') {
     foo += 1;
   }
+});
+
+test('typeof in and', function() {
+  typeof foo != 'undefined' && foo();
+});
+
+test('typeof in or', function() {
+  typeof foo == 'function' || foo();
+});
+
+test('typeof in ternary', function() {
+  typeof foo == 'undefined' ? null : foo();
 });
 
 test('if condition fail typeof', function() {
