@@ -50,6 +50,11 @@ test('global variable provides', function() {
 })
 .provides('a');
 
+test('hoisting', function() {
+  a = true;
+  var a = false;
+});
+
 test('basic requires', function() {
   b + 1;
 })
