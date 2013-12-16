@@ -19,7 +19,7 @@
     "node": "~0.4.7"
   },
   "dependencies": {
-    "acorn": "~0.2.0",
+    "acorn": "~0.4.2",
     "estraverse": "~1.1.1"
   },
   "devDependencies": {
