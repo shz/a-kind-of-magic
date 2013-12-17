@@ -45,6 +45,14 @@ test('directive require with provides self', function() {
 })
 .provides('foo', 'bar');
 
+test('directive pass', function() {
+  'akom require: foo';
+  'akom pass';
+
+  var a = b;
+})
+.requires('foo');
+
 test('global variable provides', function() {
   var a = 1;
 })
