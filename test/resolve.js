@@ -133,3 +133,35 @@ exports.testCircularDetection = function(test) {
 
   test.done();
 };
+
+exports.testWildcardResolution = function(test) {
+  var file = {
+    provide: [],
+    require: ['a.*']
+  };
+  var specs = [
+    {
+      path: 'foo',
+      provide: ['a.foo', 'a.bar'],
+      require: []
+    },
+    {
+      path: 'bar',
+      provide: ['a.baz'],
+      require: ['c']
+    },
+    {
+      path: 'bam',
+      provide: ['c'],
+      require: []
+    }
+  ];
+
+  var output = resolve(file, specs);
+
+  test.equal(output[0].path, 'bam', 'First file is correct');
+  test.equal(output[1].path, 'bar', 'Second file is correct');
+  test.equal(output[2].path, 'foo', 'Third file is correct');
+
+  test.done();
+};
