@@ -58,9 +58,17 @@ test('global variable provides', function() {
 })
 .provides('a');
 
-test('hoisting', function() {
+test('hoisting global', function() {
   hoistMeBro = true;
   var hoistMeBro = false;
+})
+.provides('hoistMeBro');
+
+test('hoisting function', function() {
+  (function() {
+    hoistMeBro = true;
+    var hoiseMeBro = false;
+  })();
 });
 
 test('basic requires', function() {
