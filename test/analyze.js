@@ -45,10 +45,23 @@ test('directive require with provides self', function() {
 })
 .provides('foo', 'bar');
 
+test('directive pass', function() {
+  'akom require: foo';
+  'akom pass';
+
+  var a = b;
+})
+.requires('foo');
+
 test('global variable provides', function() {
   var a = 1;
 })
 .provides('a');
+
+test('hoisting', function() {
+  hoistMeBro = true;
+  var hoistMeBro = false;
+});
 
 test('basic requires', function() {
   b + 1;

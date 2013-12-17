@@ -1,8 +1,7 @@
 # A Kind of Magic
 
-Automatic dependency resolution for Javascript.  Also `akom` for short.
-
 [![Build Status](https://travis-ci.org/shz/a-kind-of-magic.png)](https://travis-ci.org/shz/a-kind-of-magic)
+Automatic dependency resolution for Javascript.  Also `akom` for short.
 
 **IMPORTANT NOTE:** I practice Readme Driven Development -- this project is not yet completed!
 
@@ -10,13 +9,13 @@ Currently, the resolver isn't hooked up to the public API, and the only provide/
 gathering implemented is the hardcoded stuff described at the bottom of this readme.  Docs
 are also a little lacking, I'm sure you'll agree.
 
-# What it do
+## What it do
 
 This scans all the Javascript files in a directory, and outputs information about
 what depends on what, along with a suggested inclusion order.  It's both a library and
 a command-line tool.
 
-# Why it do
+## Why it do
 
 You're not a compiler.
 
@@ -24,7 +23,7 @@ Assuming you're the average Javascript programmer like me, you follow a sane pat
 globals and the like -- a pattern that can be recognized and used by a compiler to do your dependency
 management for you.
 
-# How it do
+## How it do
 
 Javascript files are parsed, and global assignments/accesses are recorded.  For example, if a file does
 
@@ -35,22 +34,22 @@ window.bar = window.foo + 123;
 Then the file is known to require `foo` and provide `bar`.  Pretty simple example, but `akom`
 goes further: it understands scope, immediately-invoked functions, and all that jazz.
 
-# Installation
+## Installation
 
 ```bash
 npm install a-kind-of-magic
 ```
 
-# Usage
+## Usage
 
 You've got two ways to use `akom`: via command line, or as a library.  The library
 approach is way more powerful.
 
-## Command Line
+### Command Line
 
 This isn't even implemented yet...
 
-## Library
+### Library
 
 A quick sample:
 
@@ -61,7 +60,7 @@ akom.scan('some/path', function(err, files) {
 });
 ```
 
-# Avoiding Problems
+## Avoiding Problems
 
 Provided you *always* access globals by their fully-namespaced identifiers, you're good.
 
@@ -80,7 +79,7 @@ Something worth noting as well: conditional blocks (and, well, anything that may
 execute) are considered to always pass.  So if you assign to something in an `if` statement,
 we're going to assume it always passes.  Same with `switch` statements, `while` loops, etc.
 
-# Fixing Problems
+## Fixing Problems
 
 Alas, sometimes you just have to do something obscene that's gonna confuse the analyzer.  So, to
 work around this problem you can explicitly declare exports/requirements by putting them in string
@@ -95,3 +94,16 @@ expressions at the root of a file.  Like so:
 
 The first two statements explicitly add exports/requirements.  The last two statements can be
 used to correct `akom` when it doesn't get things right.
+
+**Skipping Files**
+
+If you want to skip a file from being processed include the following
+at the root of the file:
+
+```javascript
+'akom pass'
+```
+
+Note that other AKOM directives like `'akom require: foo bar'` will still
+be processed and used for resolving dependencies.  Using `'akom pass'`
+just turns off the automagic checking.
