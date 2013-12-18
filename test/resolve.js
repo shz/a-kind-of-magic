@@ -2,9 +2,8 @@ var resolve = require('../lib/resolve');
 
 exports.testSupportsObject = function(test) {
   var file = {
-    path: 'asdf',
-    provide: ['a'],
-    require: []
+    provide: [],
+    require: ['a']
   };
   var specs = {
     'asdf': {
@@ -15,9 +14,23 @@ exports.testSupportsObject = function(test) {
   };
 
   var output = resolve(file, specs);
-  test.equal(output.length, 0, 'Resolve worked');
+  test.equal(output.length, 1, 'Resolve worked');
   test.done();
 };
+
+exports.testSupportsSpec = function(test) {
+  var specs = {
+    'asdf': {
+      path: 'asdf',
+      provide: ['a'],
+      require: []
+    }
+  };
+
+  var output = resolve(specs.asdf, specs);
+  test.equal(output.length, 1, 'Resolve worked');
+  test.done();
+}
 
 exports.testSupportsFileAsPathString = function(test) {
   var specs = {
@@ -29,7 +42,7 @@ exports.testSupportsFileAsPathString = function(test) {
   };
 
   var output = resolve('asdf', specs);
-  test.equal(output.length, 0, 'Resolve worked');
+  test.equal(output.length, 1, 'Resolve worked');
   test.done();
 };
 
@@ -95,7 +108,7 @@ exports.testResolution = function(test) {
     {
       path: 'second',
       provide: ['bar'],
-      require: ['foo',]
+      require: ['foo']
     }
   ];
 
@@ -159,9 +172,9 @@ exports.testWildcardResolution = function(test) {
 
   var output = resolve(file, specs);
 
-  test.equal(output[0].path, 'bam', 'First file is correct');
-  test.equal(output[1].path, 'bar', 'Second file is correct');
-  test.equal(output[2].path, 'foo', 'Third file is correct');
+  test.equal(output[0].path, 'foo', 'Second file is correct');
+  test.equal(output[1].path, 'bam', 'Third file is correct');
+  test.equal(output[2].path, 'bar', 'Third file is correct');
 
   test.done();
 };
