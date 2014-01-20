@@ -199,6 +199,22 @@ test('Global assign in IIFE', function() {
 .provides('a.b')
 ;
 
+test('Basic ObjectExpression', function() {
+  var a = {
+    b: 'b',
+    c: 'c'
+  };
+}).provides('a');
+
+test('ObjectExpression with require', function() {
+  var a = {
+    b: d,
+    c: 'c'
+  };
+})
+.provides('a')
+.requires('d')
+;
 
 ///////////////////////////////////////
 // Regression Tests
