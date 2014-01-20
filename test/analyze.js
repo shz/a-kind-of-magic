@@ -190,6 +190,16 @@ test('in scope member usage', function() {
   })();
 });
 
+test('Global assign in IIFE', function() {
+  (function() {
+    a.b = 'bork';
+  })();
+})
+.requires('a')
+.provides('a.b')
+;
+
+
 ///////////////////////////////////////
 // Regression Tests
 ///////////////////////////////////////
