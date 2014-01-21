@@ -129,6 +129,12 @@ test('function declaration argument', function() {
   })();
 });
 
+test('function declaration', function() {
+  function shazam() {
+    var wow = 1;
+  };
+}).provides('shazam');
+
 test('function argument to IIFE', function() {
   (function(f) {})(function(a) {
     var b;
