@@ -196,7 +196,7 @@ test('in scope member usage', function() {
   })();
 });
 
-test('Global assign in IIFE', function() {
+test('global assign in IIFE', function() {
   (function() {
     a.b = 'bork';
   })();
@@ -205,7 +205,7 @@ test('Global assign in IIFE', function() {
 .provides('a.b')
 ;
 
-test('Basic ObjectExpression', function() {
+test('basic ObjectExpression', function() {
   var a = {
     b: 'b',
     c: 'c'
@@ -222,7 +222,19 @@ test('ObjectExpression with require', function() {
 .requires('d')
 ;
 
-test('Prototype access', function() {
+test('function call with property access', function() {
+  a().foo;
+})
+.requires('a');
+
+test('property access with variable', function() {
+  var i = 0;
+  a[i];
+})
+.requires('a')
+.provides('i');
+
+test('prototype access', function() {
   var A = function() {};
   A.prototype.a = function() {};
 })
