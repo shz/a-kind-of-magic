@@ -216,6 +216,13 @@ test('ObjectExpression with require', function() {
 .requires('d')
 ;
 
+test('Prototype access', function() {
+  var A = function() {};
+  A.prototype.a = function() {};
+})
+.provides('A', 'A.prototype.a')
+;
+
 ///////////////////////////////////////
 // Regression Tests
 ///////////////////////////////////////
