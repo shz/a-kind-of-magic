@@ -67,7 +67,7 @@ test('hoisting global', function() {
 test('hoisting function', function() {
   (function() {
     hoistMeBro = true;
-    var hoiseMeBro = false;
+    var hoistMeBro = false;
   })();
 });
 

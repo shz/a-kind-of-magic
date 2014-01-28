@@ -1,4 +1,4 @@
-var resolve = require('../lib/resolve2');
+var resolve = require('../lib/resolve');
 
 exports.testSupportsObject = function(test) {
   var file = {
